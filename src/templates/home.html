@@ -1,7 +1,30 @@
 {% extends "base.html" %}
+{% block title %}Home - Mobadex{% endblock %}
 
 {% block content %}
-<h1>
-    Hello World!
-</h1>
+<h1 class="mb-4 fw-bold text-center">Find the Best Hero Matchups & Counters Instantly</h1>
+
+<div class="text-center mb-3">
+  <p class="lead text-muted">Select your hero and discover counters, synergies, and matchup statistics powered by real meta data.</p>
+</div>
+
+<form id="matchup-form" class="d-flex flex-column align-items-center gap-3" role="search" aria-label="Hero matchup form" novalidate>
+  <div class="hero-select w-100" style="max-width:400px;">
+    <label for="hero-select" class="form-label fw-semibold">Choose Your Hero</label>
+    <select id="hero-select" class="form-select" required aria-required="true" aria-describedby="heroHelp">
+      <option value="" disabled selected>Select a hero</option>
+      {% for hero in heroes %}
+      <option value="{{ hero.id }}">{{ hero.name }}</option>
+      {% endfor %}
+    </select>
+    <div id="heroHelp" class="form-text">Start typing to filter heroes.</div>
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg mt-3" aria-label="Analyze matchup">Analyze Matchup</button>
+</form>
+
+<div id="result-container" class="mt-5 container"></div>
+
+<hr class="my-5">
+
 {% endblock %}
