@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-988*r2rb+i0&4_fbn*502)3nh$!^xw4ni=(s)w6$#%yv)bfb4v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://mobadex.onrender.com']
 
 
 # Application definition
