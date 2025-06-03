@@ -12,6 +12,19 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+def hero_counter(request):
+    query = request.GET.get('q', '').strip()
+    hero_data = None
+    if query:
+        hero_list = utils.all_heroes()
+        for id, name in hero_list:
+            if name.lower() == query.lower():
+                hero_data = utils.hero_counters(id)
+                break
+
+    return render(request, 'hero-counter.html', {'hero_data': hero_data})
+
+
 def matchup_page(request):
     days_options = [1, 3, 7, 15, 30]
     rank_options = ["all", "epic", "legend", "mythic", "honor", "glory"]

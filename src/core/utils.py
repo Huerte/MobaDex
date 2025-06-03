@@ -48,11 +48,43 @@ def hero_rank(days=1, rank='all', size=127, index=127, sort_field='win_rate', so
 
         data.append(hero)
 
-    # Optional: Client-side sort (if needed)
     data.sort(key=lambda x: x.get(sort_field, 0), reverse=(sort_order=='desc'))
 
     return data, total_count
 
+def hero_counters(main_hero_id=1):
+    res = fetch_api(f'hero-counter/{main_hero_id}/')
 
-if __name__ == '__main__':
-    print(hero_rank())
+    records = res.get('data', {}).get('records', [])
+    if not records:
+        return None
+
+    record = records[0]['data']
+    main = {
+        'id': record['main_heroid'],
+        'name': record['main_hero']['data'].get('name', 'Unknown'),
+        'img': record['main_hero']['data'].get('head', ''),
+        'win_rate': record.get('main_hero_win_rate', 0) * 100,
+        'ban_rate': record.get('main_hero_ban_rate', 0) * 100,
+        'appearance_rate': record.get('main_hero_appearance_rate', 0) * 100,
+    }
+
+    counters = []
+    for sub in record.get('sub_hero', []):
+        hero_data = sub.get('hero', {}).get('data', {})
+        counters.append({
+            'heroid': sub.get('heroid', 0),
+            'img': hero_data.get('head', ''),
+            'win_rate': sub.get('hero_win_rate', 0) * 100,
+            'appearance_rate': sub.get('hero_appearance_rate', 0) * 100,
+            'increase_win_rate': sub.get('increase_win_rate', 0) * 100,
+            'channel_id': sub.get('hero_channel', {}).get('id', 0),
+        })
+
+    return {
+        'main_hero': main,
+        'counters': sorted(counters, key=lambda x: x['increase_win_rate'], reverse=True)
+    }
+
+# if __name__ == '__main__':
+#     print(hero_counters())

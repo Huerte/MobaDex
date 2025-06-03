@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .search-card,
+  .result-card {
+    background: #f8f9fa;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .search-card:hover,
+  .result-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.15);
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #86b7fe;
+  }
+
+  .counter-badge {
+    width: 110px;
+    padding: 0.75rem 0.5rem;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #6610f2, #6f42c1);
+    color: white;
+    text-align: center;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+
+  .counter-badge:hover {
+    background: linear-gradient(135deg, #520dc7, #5a32a3);
+    transform: scale(1.07);
+  }
+
+  .tooltip-inner {
+    text-align: left;
+  }
+</style>
+
+<div class="container-sm py-5">
+
+  <!-- Search Card -->
+  <div class="search-card p-4 mx-auto mb-4" style="max-width: 600px;">
+    <h2 class="text-center text-primary mb-3">
+      <i class="fas fa-crosshairs"></i> Hero Counter Search
+    </h2>
+
+    <form method="get" class="position-relative">
+      <div class="input-group">
+        <span class="input-group-text bg-primary text-white">
+          <i class="fas fa-search"></i>
+        </span>
+        <input
+          type="text"
+          name="q"
+          class="form-control"
+          placeholder="Type a hero name..."
+          aria-label="Hero search"
+          value="{{ request.GET.q|default:'' }}"
+          autocomplete="off"
+        >
+        <button class="btn btn-outline-primary" type="submit">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+      <div id="search-suggestions" class="list-group position-absolute w-100 mt-1" style="z-index:1000; display:none;"></div>
+    </form>
+  </div>
+
+{% if hero_data %}
+<div class="result-section py-5 bg-light-subtle">
+  <div class="container">
+    <div class="result-card bg-white rounded shadow-sm p-4 mx-auto" style="max-width: 720px;">
+
+      <!-- Hero Info -->
+      <div class="d-flex align-items-center border-bottom pb-3 mb-4">
+        <img src="{{ hero_data.main_hero.img }}" alt="{{ hero_data.main_hero.name }}"
+             class="rounded-circle border border-2 shadow-sm me-3"
+             style="width: 84px; height: 84px; object-fit: cover;">
+        <div class="flex-grow-1">
+          <h2 id="selected-hero-name" class="fw-bold mb-1 text-dark">{{ hero_data.main_hero.name }}</h2>
+          <div class="d-flex flex-wrap gap-3 small text-muted fw-semibold">
+            <span title="Win Rate">
+              <i class="fas fa-trophy me-1 text-success"></i>{{ hero_data.main_hero.win_rate|floatformat:1 }}%
+            </span>
+            <span title="Ban Rate">
+              <i class="fas fa-ban me-1 text-secondary"></i>{{ hero_data.main_hero.ban_rate|floatformat:1 }}%
+            </span>
+            <span title="Appearance Rate">
+              <i class="fas fa-eye me-1 text-primary"></i>{{ hero_data.main_hero.appearance_rate|floatformat:1 }}%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counter Cards Grid -->
+      <div id="selected-hero-counters" class="row g-3 justify-content-center" role="list">
+        {% for counter in hero_data.counters %}
+        <div class="col-6 col-sm-4 col-md-3" role="listitem">
+          <div class="counter-badge bg-body rounded border shadow-sm text-center p-3 h-100"
+               style="transition: transform 0.2s ease;"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="↑ +{{ counter.increase_win_rate|floatformat:1 }}% Win Rate&#10;{{ counter.win_rate|floatformat:1 }}% WR&#10;{{ counter.appearance_rate|floatformat:1 }}% Pick Rate">
+            <img src="{{ counter.img }}" alt="{{ counter.name }}"
+                 class="rounded border mb-2"
+                 style="width: 48px; height: 48px; object-fit: cover;">
+            <div class="mt-1 px-2 py-1 rounded text-white fw-semibold"
+                 style="font-size: 0.8rem; background-color: {% if counter.increase_win_rate >= 0 %}#4caf50{% else %}#f44336{% endif %};">
+              {{ counter.increase_win_rate|floatformat:1 }}%
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+        <div class="mb-4 px-3 py-2 rounded bg-info bg-opacity-10 border border-info text-info small fw-semibold mt-4 mx-auto" style="max-width: 720px;">
+        <i class="fas fa-info-circle me-2"></i>
+        This section shows heroes statistically effective against <strong>{{ hero_data.main_hero.name }}</strong>.
+        The <span class="badge bg-success">green %</span> indicates how much more often they win against this hero.
+        Win rates and pick rates are based on recent match data, including performance over different game phases.
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="text-center py-5">
+  <div class="alert alert-info shadow-sm mx-auto" style="max-width: 600px;">
+    <i class="fas fa-search me-2"></i>
+    Start by typing a hero name above to see their strongest counters.
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}

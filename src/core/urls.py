@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('matchups/', views.matchup_page, name='matchups'),
     path('about/', views.about, name='about'),
+    path('hero-counter/', views.hero_counter, name='hero-counter'),
 
     # API endpoints
     # path('api/heroes/', views.api_hero_list, name='api_hero_list'),
