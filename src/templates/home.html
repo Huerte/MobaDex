@@ -2,29 +2,69 @@
 {% block title %}Home - Mobadex{% endblock %}
 
 {% block content %}
-<h1 class="mb-4 fw-bold text-center">Find the Best Hero Matchups & Counters Instantly</h1>
+<div class="container py-5">
 
-<div class="text-center mb-3">
-  <p class="lead text-muted">Select your hero and discover counters, synergies, and matchup statistics powered by real meta data.</p>
+  <!-- Hero Section -->
+  <section class="text-center mb-5">
+    <h1 class="fw-bold display-4">
+      Welcome to <span class="text-primary">Mobadex</span>
+    </h1>
+    <p class="lead text-muted mb-4">Master the draft. Dominate the game.</p>
+    <a href="{% url 'about' %}" class="btn btn-outline-primary btn-lg px-4">
+      <i class="fas fa-info-circle me-2"></i>Learn More
+    </a>
+  </section>
+
+  <!-- Feature Cards -->
+  <section class="mb-5">
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+          <div class="card-body">
+            <i class="fas fa-bolt fa-2x text-primary mb-3"></i>
+            <h5 class="fw-bold mb-2">Live Matchup Data</h5>
+            <p class="text-muted small mb-0">Access real-time hero analytics and counter picks instantly.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+          <div class="card-body">
+            <i class="fas fa-shield-alt fa-2x text-success mb-3"></i>
+            <h5 class="fw-bold mb-2">Counter & Synergy</h5>
+            <p class="text-muted small mb-0">Build synergistic comps and nullify enemy threats.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+          <div class="card-body">
+            <i class="fas fa-chart-line fa-2x text-danger mb-3"></i>
+            <h5 class="fw-bold mb-2">Meta Aligned</h5>
+            <p class="text-muted small mb-0">Adapt with data-driven insights from current trends.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+          <div class="card-body">
+            <i class="fas fa-users fa-2x text-info mb-3"></i>
+            <h5 class="fw-bold mb-2">Community Driven</h5>
+            <p class="text-muted small mb-0">Leverage wisdom of top-tier drafters in the Mobadex network.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-light rounded-3 py-5 px-4 text-center shadow-sm">
+    <h2 class="fw-bold mb-3">Join the GEN. Squad Advantage</h2>
+    <p class="text-muted mb-4">Unlock elite strategy with Mobadex—crafted for tactical dominance.</p>
+    <a href="https://github.com/Huerte/2048-Game-using-tkinter/blob/main/Screenshot_20241029-085827~2.png?raw=true" class="btn btn-primary btn-lg px-4">
+      <i class="fas fa-user-plus me-2"></i>Get Started
+    </a>
+  </section>
+
 </div>
-
-<form id="matchup-form" class="d-flex flex-column align-items-center gap-3" role="search" aria-label="Hero matchup form" novalidate>
-  <div class="hero-select w-100" style="max-width:400px;">
-    <label for="hero-select" class="form-label fw-semibold">Choose Your Hero</label>
-    <select id="hero-select" class="form-select" required aria-required="true" aria-describedby="heroHelp">
-      <option value="" disabled selected>Select a hero</option>
-      {% for hero in heroes %}
-      <option value="{{ hero.id }}">{{ hero.name }}</option>
-      {% endfor %}
-    </select>
-    <div id="heroHelp" class="form-text">Start typing to filter heroes.</div>
-  </div>
-
-  <button type="submit" class="btn btn-primary btn-lg mt-3" aria-label="Analyze matchup">Analyze Matchup</button>
-</form>
-
-<div id="result-container" class="mt-5 container"></div>
-
-<hr class="my-5">
-
 {% endblock %}

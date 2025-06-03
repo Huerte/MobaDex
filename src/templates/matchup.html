@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="fw-bold mb-4 text-center">Hero Matchups</h1>
+
+  <!-- Filter Panel -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-body">
+    <form method="GET" action="{% url 'matchups' %}" class="p-3 border rounded-3 bg-light shadow-sm">
+    <div class="row gy-3 gx-4 align-items-end">
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+        <label for="days" class="form-label fw-semibold small text-uppercase">Days</label>
+        <select id="days" name="days" class="form-select shadow-sm">
+            {% for d in days_options %}
+            <option value="{{ d }}" {% if d|stringformat:"s" == selected_days|stringformat:"s" %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+        <label for="rank" class="form-label fw-semibold small text-uppercase">Rank</label>
+        <select id="rank" name="rank" class="form-select shadow-sm">
+            {% for r in rank_options %}
+            <option value="{{ r }}" {% if r == selected_rank %}selected{% endif %}>{{ r|capfirst }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+        <label for="sort_field" class="form-label fw-semibold small text-uppercase">Sort Field</label>
+        <select id="sort_field" name="sort_field" class="form-select shadow-sm">
+            {% for field in sort_fields %}
+            <option value="{{ field }}" {% if field == selected_sort_field %}selected{% endif %}>{{ field|capfirst }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+        <label for="sort_order" class="form-label fw-semibold small text-uppercase">Order</label>
+        <select id="sort_order" name="sort_order" class="form-select shadow-sm">
+            {% for order in sort_orders %}
+            <option value="{{ order }}" {% if order == selected_sort_order %}selected{% endif %}>{{ order|upper }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <input type="hidden" name="size" value="127">
+        <input type="hidden" name="index" value="{{ current_page }}">
+
+        <div class="col-12 col-md-6 col-lg-2 text-end">
+        <button type="submit" class="btn btn-primary w-100 fw-semibold shadow-sm">
+            <i class="fas fa-filter me-1"></i>Filter
+        </button>
+        </div>
+    </div>
+    </form>
+    </div>
+  </div>
+
+    <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white fw-bold text-uppercase small">
+        Matchup Statistics
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 text-nowrap">
+        <thead class="table-light text-center small">
+            <tr>
+            <th style="width: 40px;">#</th>
+            <th>Hero</th>
+            <th style="width: 90px;">Appearance</th>
+            <th style="width: 90px;">Ban</th>
+            <th style="width: 90px;">Win</th>
+            <th>Top Synergies</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hero in records %}
+            <tr class="matchup-row" style="cursor: pointer;" onclick="location.href='#';">
+            <!-- Index -->
+            <td class="text-center text-muted fw-bold">{{ forloop.counter0|add:page_offset|add:1 }}</td>
+
+            <!-- Hero Info -->
+            <td class="p-2">
+                <div class="d-flex align-items-center gap-2">
+                <img src="{{ hero.main_hero_img }}" alt="{{ hero.main_hero_name }}" class="rounded-circle border shadow-sm flex-shrink-0" width="44" height="44">
+                <div class="d-none d-sm-block">
+                    <div class="fw-semibold">{{ hero.main_hero_name }}</div>
+                    <div class="small text-muted">ID: {{ hero.main_hero_id }}</div>
+                </div>
+                </div>
+            </td>
+
+            <!-- Appearance -->
+            <td class="text-center text-primary fw-semibold small">
+                {{ hero.appearance_rate|floatformat:2 }}%
+            </td>
+
+            <!-- Ban -->
+            <td class="text-center text-danger fw-semibold small">
+                {{ hero.ban_rate|floatformat:2 }}%
+            </td>
+
+            <!-- Win -->
+            <td class="text-center text-success fw-semibold small">
+                {{ hero.win_rate|floatformat:2 }}%
+            </td>
+
+            <!-- Top Synergies -->
+            <td>
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                {% for sub in hero.sub_heroes|slice:":3" %}
+                <div class="text-center" style="width: 56px;">
+                    <img src="{{ sub.img }}" alt="Sub Hero" class="img-fluid rounded border shadow-sm mb-1" width="44" height="44">
+                    <div class="small text-success fw-semibold">+{{ sub.increase_win_rate|floatformat:2 }}%</div>
+                </div>
+                {% endfor %}
+                </div>
+            </td>
+            </tr>
+            {% empty %}
+            <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+                No records found.
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    </div>
+
+  <!-- Pagination -->
+  <nav class="d-flex justify-content-center mt-4">
+    <ul class="pagination pagination-sm">
+      {% if current_page > 1 %}
+        <li class="page-item">
+          <a class="page-link" href="?index={{ current_page|add:-1 }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+      {% for page_num in page_range %}
+        <li class="page-item {% if page_num == current_page %}active{% endif %}">
+          <a class="page-link" href="?index={{ page_num }}">{{ page_num }}</a>
+        </li>
+      {% endfor %}
+      {% if current_page < total_pages %}
+        <li class="page-item">
+          <a class="page-link" href="?index={{ current_page|add:1 }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .matchup-row:hover {
+    background-color: #f1f3f5;
+    transition: background 0.2s ease;
+  }
+
+  table.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .pagination .page-link {
+    color: #0d6efd;
+  }
+
+  .pagination .active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+  }
+</style>
+{% endblock %}

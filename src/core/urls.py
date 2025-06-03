@@ -3,8 +3,9 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    # path('matchups/', views.hero_matchups, name='matchups'),
+    path('matchups/', views.matchup_page, name='matchups'),
     path('about/', views.about, name='about'),
+
     # API endpoints
     # path('api/heroes/', views.api_hero_list, name='api_hero_list'),
     # path('api/heroes/<int:hero_id>/counters/', views.api_hero_counters, name='api_hero_counters'),
