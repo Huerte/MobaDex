@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}About - Mobadex{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="text-center mb-5 fw-bold">About Mobadex</h1>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <!-- Accordion Sections -->
+      <div class="accordion mb-5" id="aboutAccordion">
+        <!-- What is Mobadex -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingIntro">
+            <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIntro" aria-expanded="true" aria-controls="collapseIntro">
+              <i class="fas fa-info-circle me-2"></i> What is Mobadex?
+            </button>
+          </h2>
+          <div id="collapseIntro" class="accordion-collapse collapse show" aria-labelledby="headingIntro" data-bs-parent="#aboutAccordion">
+            <div class="accordion-body">
+              Mobadex is a Mobile Legends hero matchup analyzer that provides real-time insights into hero counters, synergies, and meta trends. It helps players draft more strategically for better in-game performance.
+            </div>
+          </div>
+        </div>
+
+        <!-- Purpose -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPurpose">
+            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePurpose" aria-expanded="false" aria-controls="collapsePurpose">
+              <i class="fas fa-flag me-2"></i> Purpose
+            </button>
+          </h2>
+          <div id="collapsePurpose" class="accordion-collapse collapse" aria-labelledby="headingPurpose" data-bs-parent="#aboutAccordion">
+            <div class="accordion-body">
+              Mobadex was created for the Ghost Empire Nation (GEN.) squad to support team members in improving their performance. By offering tactical drafting insights and real-time data, it aims to give every match a strategic edge.
+            </div>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFeatures">
+            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFeatures" aria-expanded="false" aria-controls="collapseFeatures">
+              <i class="fas fa-star me-2"></i> Core Features
+            </button>
+          </h2>
+          <div id="collapseFeatures" class="accordion-collapse collapse" aria-labelledby="headingFeatures" data-bs-parent="#aboutAccordion">
+            <div class="accordion-body px-0">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fas fa-bolt text-primary me-2"></i> Real-time matchup analytics</li>
+                <li class="list-group-item"><i class="fas fa-shield-alt text-success me-2"></i> Hero counters & synergy logic</li>
+                <li class="list-group-item"><i class="fas fa-mobile-alt text-warning me-2"></i> Optimized for mobile devices</li>
+                <li class="list-group-item"><i class="fas fa-chart-line text-danger me-2"></i> Meta-aligned suggestions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTech">
+            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTech" aria-expanded="false" aria-controls="collapseTech">
+              <i class="fas fa-code me-2"></i> Technology Stack
+            </button>
+          </h2>
+          <div id="collapseTech" class="accordion-collapse collapse" aria-labelledby="headingTech" data-bs-parent="#aboutAccordion">
+            <div class="accordion-body">
+              Developed using Django (Python) and Bootstrap 5, Mobadex leverages a modern, API-driven architecture with an emphasis on responsiveness, performance, and accessibility.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Developer Card -->
+      <div class="text-center mt-5">
+        <div class="card border-0 shadow-sm mx-auto" style="max-width: 400px;">
+          <div class="card-body">
+            <img src="https://avatars.githubusercontent.com/u/15700717?v=4" alt="Developer Avatar" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+            <p class="text-muted mb-2">Crafted quietly in service of better team coordination.</p>
+            <a href="https://github.com/Huerte" class="text-decoration-none small" target="_blank" rel="noopener">
+              <i class="fab fa-github me-1"></i>github.com/Huerte
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
